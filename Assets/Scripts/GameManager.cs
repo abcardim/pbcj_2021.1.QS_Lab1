@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -77,6 +78,10 @@ public class GameManager : MonoBehaviour
             {
                 numTentativas++;
                 UpdateNumTentativas();
+                if(numTentativas >= maxNumTentativas)
+                {
+                    SceneManager.LoadScene("Lab1_badEnding");
+                }
                 for(int i = 0; i <= tamanhoPalavraOculta; i++)
                 {
                     if (!letrasDescobertas[i])
@@ -90,6 +95,7 @@ public class GameManager : MonoBehaviour
                             score++;
                             PlayerPrefs.SetInt("score", score);
                             UpdateScore();
+                            verificaSePalavraDescoberta();
                         }
                     }
                 }
@@ -105,6 +111,20 @@ public class GameManager : MonoBehaviour
     void UpdateScore()
     {
         GameObject.Find("scoreUI").GetComponent<Text>().text = "Pontuação: " + score;
+    }
+
+    void verificaSePalavraDescoberta()
+    {
+        bool condicao = true;
+        for(int i = 0; i < tamanhoPalavraOculta; i++)
+        {
+            condicao = condicao && letrasDescobertas[i];
+        }
+        if (condicao)
+        {
+            PlayerPrefs.SetString("mensagemVitoria", "A palavra era: " + palavraOculta);
+            SceneManager.LoadScene("Lab1_goodEnding");
+        }
     }
 
 }
