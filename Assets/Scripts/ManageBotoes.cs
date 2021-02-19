@@ -22,4 +22,9 @@ public class ManageBotoes : MonoBehaviour
     {
         SceneManager.LoadScene("Lab1");
     }
+    public void ResetGame()
+    {
+        PlayerPrefs.SetInt("score", 0);
+        SceneManager.LoadScene("Lab1_start");
+    }
 }

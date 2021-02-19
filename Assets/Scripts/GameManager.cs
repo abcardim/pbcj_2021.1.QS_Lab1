@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject letra;            // prefab da letra no Game
     public GameObject centro;           // objeto de texto que indica o centro da tela 
+    
+    
+    public AudioClip wrongSound;
+    AudioSource audioSource;
 
     private string palavraOculta = "";  // palavra oculta a ser descoberta (usado no Lab1-parte A)
     // private string[] palavrasOcultas = new string[] { "carro", "elefante", "futebol" }; // array de palavras ocultas possíveis (usado no Lab2 - Parte A)
@@ -29,9 +33,10 @@ public class GameManager : MonoBehaviour
         numTentativas = 0;
         maxNumTentativas = 10;
         UpdateNumTentativas();
+        PlayerPrefs.SetInt("score", 0);
         UpdateScore();
-
-        
+        audioSource = GetComponent<AudioSource>();
+        wrongSound = (AudioClip)Resources.Load("forca_wrongAnswer");
     }
 
     // Update is called once per frame
@@ -82,6 +87,7 @@ public class GameManager : MonoBehaviour
                 UpdateNumTentativas();
                 if(numTentativas >= maxNumTentativas)
                 {
+                    PlayerPrefs.SetString("mensagemScore", "Pontuação: " + score);
                     SceneManager.LoadScene("Lab1_badEnding");
                 }
                 for(int i = 0; i <= tamanhoPalavraOculta; i++)
@@ -98,6 +104,10 @@ public class GameManager : MonoBehaviour
                             PlayerPrefs.SetInt("score", score);
                             UpdateScore();
                             VerificaSePalavraDescoberta();
+                        }
+                        else
+                        {
+                            audioSource.PlayOneShot(wrongSound);
                         }
                     }
                 }
@@ -125,6 +135,7 @@ public class GameManager : MonoBehaviour
         if (condicao)
         {
             PlayerPrefs.SetString("mensagemVitoria", "A palavra era: " + palavraOculta);
+            PlayerPrefs.SetString("mensagemScore", "Pontuação: " + score);
             SceneManager.LoadScene("Lab1_goodEnding");
         }
     }
