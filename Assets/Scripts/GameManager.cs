@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject centro;           // objeto de texto que indica o centro da tela 
 
     private string palavraOculta = "";  // palavra oculta a ser descoberta (usado no Lab1-parte A)
-    private string[] palavrasOcultas = new string[] { "carro", "elefante", "futebol" }; // array de palavras ocultas possíveis
+    // private string[] palavrasOcultas = new string[] { "carro", "elefante", "futebol" }; // array de palavras ocultas possíveis (usado no Lab2 - Parte A)
 
     private int tamanhoPalavraOculta;   // tamanho desta palavra oculta
     char[] letrasOcultas;               // letras da palavra oculta
@@ -57,8 +57,10 @@ public class GameManager : MonoBehaviour
     void InitGame()
     {
         // palavraOculta = "Elefante";                         // definição da palavra oculta a ser descoberta  (usado no Lab1-parte A)
-        int numeroAleatorio = Random.Range(0, palavrasOcultas.Length); // sorteamos um número dentro do número de palavras do array
-        palavraOculta = palavrasOcultas[numeroAleatorio];   // selecionamos uma palavra sorteada pra ser a oculta;
+        // int numeroAleatorio = Random.Range(0, palavrasOcultas.Length); // sorteamos um número dentro do número de palavras do array (usado no Lab2 - Parte A)
+        //palavraOculta = palavrasOcultas[numeroAleatorio];   // selecionamos uma palavra sorteada pra ser a oculta (usado no Lab2 - Parte A)
+
+        palavraOculta = PegaUmaPalavraDoArquivo();
         tamanhoPalavraOculta = palavraOculta.Length;        // determinação do número de letras da palavra oculta
         palavraOculta = palavraOculta.ToUpper();            // transforma-se a palavra em maiúscula
         letrasOcultas = new char[tamanhoPalavraOculta];     // instanciamento do array char das letras da palavra
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
                             score++;
                             PlayerPrefs.SetInt("score", score);
                             UpdateScore();
-                            verificaSePalavraDescoberta();
+                            VerificaSePalavraDescoberta();
                         }
                     }
                 }
@@ -113,7 +115,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("scoreUI").GetComponent<Text>().text = "Pontuação: " + score;
     }
 
-    void verificaSePalavraDescoberta()
+    void VerificaSePalavraDescoberta()
     {
         bool condicao = true;
         for(int i = 0; i < tamanhoPalavraOculta; i++)
@@ -125,6 +127,15 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetString("mensagemVitoria", "A palavra era: " + palavraOculta);
             SceneManager.LoadScene("Lab1_goodEnding");
         }
+    }
+
+    string PegaUmaPalavraDoArquivo()
+    {
+        TextAsset t1 = (TextAsset)Resources.Load("palavras1", typeof(TextAsset));
+        string s = t1.text;
+        string[] palavras = s.Split(' ');
+        int palavraAleatoria = Random.Range(0, palavras.Length + 1);
+        return (palavras[palavraAleatoria]);
     }
 
 }
