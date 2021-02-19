@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
     public GameObject centro;           // objeto de texto que indica o centro da tela 
     
     
-    public AudioClip wrongSound;
-    AudioSource audioSource;
+    public AudioClip wrongSound;        // nome do som que será tocado ao realizar uma tentativa errada
+    AudioSource audioSource;            // criação da fonte de áudio
 
     private string palavraOculta = "";  // palavra oculta a ser descoberta (usado no Lab1-parte A)
     // private string[] palavrasOcultas = new string[] { "carro", "elefante", "futebol" }; // array de palavras ocultas possíveis (usado no Lab2 - Parte A)
@@ -35,8 +35,8 @@ public class GameManager : MonoBehaviour
         UpdateNumTentativas();
         PlayerPrefs.SetInt("score", 0);
         UpdateScore();
-        audioSource = GetComponent<AudioSource>();
-        wrongSound = (AudioClip)Resources.Load("forca_wrongAnswer");
+        audioSource = GetComponent<AudioSource>();      // busca a fonte de áudio associada ao GameObject
+        wrongSound = (AudioClip)Resources.Load("forca_wrongAnswer");    // associa o asset/som com o nome do clipe definido anteriormente
     }
 
     // Update is called once per frame
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
                         }
                         else
                         {
-                            audioSource.PlayOneShot(wrongSound);
+                            audioSource.PlayOneShot(wrongSound);    // se foi uma tentativa com erro, tocar o som de erro (wrongSound)
                         }
                     }
                 }
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         if (condicao)
         {
             PlayerPrefs.SetString("mensagemVitoria", "A palavra era: " + palavraOculta);
-            PlayerPrefs.SetString("mensagemScore", "Pontuação: " + score);
+            PlayerPrefs.SetString("mensagemScore", "Pontuação: " + score);      // Salva qual era o score antes da mudança de scene
             SceneManager.LoadScene("Lab1_goodEnding");
         }
     }

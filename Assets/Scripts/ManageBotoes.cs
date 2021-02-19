@@ -22,7 +22,7 @@ public class ManageBotoes : MonoBehaviour
     {
         SceneManager.LoadScene("Lab1");
     }
-    public void ResetGame()
+    public void ResetGame()     // Faz os botoes de fim de jogo voltar´à tela inicial
     {
         PlayerPrefs.SetInt("score", 0);
         SceneManager.LoadScene("Lab1_start");
